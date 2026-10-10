@@ -182,7 +182,7 @@ Start-Process report.html
 
 All test run screenshots are also available here:
 
-### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/https://drive.google.com/drive/folders/https://drive.google.com/drive/folders/1SO5cJpWqUIa51ALeHiXUR9CX5Mg4mpRk?usp=sharing)
+### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/drive/folders/1SO5cJpWqUIa51ALeHiXUR9CX5Mg4mpRk?usp=drive_link)
 
 ---
 
