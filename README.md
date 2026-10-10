@@ -1,6 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/grafana/k6/master/assets/k6-logo-with-grafana.svg" alt="Grafana k6" width="260"/>
 
 # DMoney API Load Testing with k6
 
@@ -183,7 +182,7 @@ Start-Process report.html
 
 All test run screenshots are also available here:
 
-### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/https://drive.google.com/drive/folders/1SO5cJpWqUIa51ALeHiXUR9CX5Mg4mpRk?usp=sharing)
+### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/drive/folders/1SO5cJpWqUIa51ALeHiXUR9CX5Mg4mpRk?usp=drive_link)
 
 ---
 
