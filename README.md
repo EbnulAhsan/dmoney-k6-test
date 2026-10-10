@@ -1,5 +1,6 @@
 <div align="center">
 
+<img src="https://raw.githubusercontent.com/grafana/k6/master/assets/k6-logo-with-grafana.svg" alt="Grafana k6" width="260"/>
 
 # DMoney API Load Testing with k6
 
@@ -112,15 +113,7 @@ k6 run setup_auth.js
 
 > **Note:** Make sure the tokens printed in the console output are saved into `tokens.json`.
 
-### 2. Verify System State *(Optional)*
-
-Run a single iteration to confirm all tokens and routes return HTTP `200`/`201`:
-
-```bash
-k6 run debug.js
-```
-
-### 3. Run the Load Test
+### 2. Run the Load Test
 
 Execute the full multi-phase scenario suite:
 
@@ -128,7 +121,7 @@ Execute the full multi-phase scenario suite:
 k6 run script.js
 ```
 
-### 4. View the Test Report
+### 3. View the Test Report
 
 Open the generated report in your default browser:
 
@@ -140,41 +133,41 @@ Start-Process report.html
 
 ## 📊 Performance Metrics & Results
 
-> Report generated: **2026-10-10 21:27** (k6-reporter v3.0.4)
+> Report generated: **2026-10-11 03:44** (k6-reporter v3.0.4)
 
 ### Overall Summary
 
 | Metric | Result |
 |--------|:------:|
-| Total Requests | **391** (3.25 req/s) |
-| Total Iterations | **219** (1.82 iter/s) |
-| Virtual Users | Min **2** · Max **6** |
+| Total Requests | **230** (1.90 req/s) |
+| Total Iterations | **86** (0.71 iter/s) |
+| Virtual Users | Min **2** · Max **8** |
 | Breached Thresholds | **0** ✅ (Passed) |
-| Failed Requests | **12** (3.07%) |
-| Checks | **379** passed · **12** failed |
-| Data Received / Sent | 0.25 MB / 0.07 MB |
+| Failed Requests | **4** (1.74%) |
+| Checks | **226** passed · **4** failed |
+| Data Received / Sent | 0.16 MB / 0.05 MB |
 
 ### Response Times (ms)
 
 | Metric | Avg | Min | Med | Max | P(90) | P(95) |
 |--------|:---:|:---:|:---:|:---:|:-----:|:-----:|
-| `http_req_duration` | 241.76 | 126.37 | 171.16 | 3178.91 | 316.35 | 507.50 |
-| `deposit_response_time` | 231.22 | 176.57 | 206.12 | 510.90 | 324.02 | 337.46 |
+| `http_req_duration` | 177.36 | 129.62 | 160.08 | 328.44 | 241.20 | 275.96 |
+| `deposit_response_time` | 229.55 | 169.36 | 219.68 | 327.83 | 312.05 | 319.01 |
 
 ### Success Rates
 
 | Transaction | Success Rate | Passed | Failed | |
 |-------------|:------------:|:------:|:------:|---|
-| Send Money | **100.00%** | 71 | 0 | ![100%](https://img.shields.io/badge/100%25-brightgreen?style=flat-square) |
-| Payment | **97.72%** | 214 | 5 | ![97.72%](https://img.shields.io/badge/97.72%25-green?style=flat-square) |
-| Deposit | **93.07%** | 94 | 7 | ![93.07%](https://img.shields.io/badge/93.07%25-yellowgreen?style=flat-square) |
+| Send Money | **100.00%** | 54 | 0 | ![100%](https://img.shields.io/badge/100%25-brightgreen?style=flat-square) |
+| Payment | **100.00%** | 118 | 0 | ![100%](https://img.shields.io/badge/100%25-brightgreen?style=flat-square) |
+| Deposit | **93.10%** | 54 | 4 | ![93.1%](https://img.shields.io/badge/93.10%25-yellowgreen?style=flat-square) |
 
 ### Key Observations
 
-- All defined thresholds passed (**0 breached**), even with 12 failed requests overall.
-- **Send Money** was fully stable with zero failures.
-- **Payment** and **Deposit** showed minor failures (5 and 7 respectively) under concurrent load.
-- Median latency of ~171ms and P(95) of ~508ms indicate responsive behavior; the max of ~3.18s points to a few isolated slow requests.
+- All defined thresholds passed (**0 breached**) with only 4 failed requests (1.74%).
+- **Send Money** and **Payment** were fully stable with zero failures.
+- All 4 failures came from **Deposit** (93.10% success), which is the only area needing attention.
+- Median latency of ~160ms and P(95) of ~276ms show consistently fast responses, with a max of ~328ms and no major spikes.
 
 ---
 
@@ -182,7 +175,19 @@ Start-Process report.html
 
 All test run screenshots are also available here:
 
-### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/drive/folders/1SO5cJpWqUIa51ALeHiXUR9CX5Mg4mpRk?usp=drive_link)
+### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/YOUR_DRIVE_LINK_HERE)
+
+### Report Summary & Response Times
+![Report Summary](screenshots/01-summary-trends.png)
+
+### Success Rates
+![Success Rates](screenshots/02-rates.png)
+
+### Test Run Details
+![Test Run Details](screenshots/03-test-run-details.png)
+
+### Checks
+![Checks](screenshots/04-checks.png)
 
 ---
 
@@ -201,7 +206,7 @@ All test run screenshots are also available here:
 ## 👤 Author
 
 **Md. Ebnul Ahsan**
-CSE Student, AIUB 
+CSE Student, AIUB · Full-Stack · DevOps · QA
 
 [![GitHub](https://img.shields.io/badge/GitHub-EbnulAhsan-181717?style=flat-square&logo=github)](https://github.com/EbnulAhsan)
 
