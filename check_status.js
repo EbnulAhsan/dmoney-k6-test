@@ -5,7 +5,7 @@ const tokens = JSON.parse(open('./tokens.json'));
 const BASE_URL = 'https://dmoney.roadtocareer.net';
 
 export default function () {
-    ক
+
     const smRes = http.post(
         `${BASE_URL}/transaction/sendmoney`,
         JSON.stringify({

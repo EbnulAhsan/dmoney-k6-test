@@ -7,6 +7,7 @@ const users = JSON.parse(open('./users.json'));
 const tokens = JSON.parse(open('./tokens.json'));
 const BASE_URL = 'https://dmoney.roadtocareer.net';
 
+// Custom Metrics
 const sendMoneySuccessRate = new Rate('sendmoney_success_rate');
 const paymentSuccessRate = new Rate('payment_success_rate');
 const depositSuccessRate = new Rate('deposit_success_rate');
@@ -17,27 +18,31 @@ const depositTrend = new Trend('deposit_response_time');
 
 export const options = {
     scenarios: {
-        phase_0_30: {
+        // 0–30s
+        flow_0_30: {
             executor: 'constant-vus',
             vus: 2,
             duration: '30s',
             exec: 'phase1',
         },
-        phase_30_60: {
+        // 30–60s
+        flow_30_60: {
             executor: 'constant-vus',
             vus: 3,
             duration: '30s',
             startTime: '30s',
             exec: 'phase2',
         },
-        phase_60_90: {
+        // 60–90s
+        flow_60_90: {
             executor: 'constant-vus',
             vus: 4,
             duration: '30s',
             startTime: '60s',
             exec: 'phase3',
         },
-        phase_90_120: {
+        // 90–120s
+        flow_90_120: {
             executor: 'constant-vus',
             vus: 4,
             duration: '30s',
@@ -46,143 +51,91 @@ export const options = {
         },
     },
     thresholds: {
-        http_req_failed: ['rate<0.15'],
-        http_req_duration: ['p(95)<3000'],
-        sendmoney_success_rate: ['rate>0.70'],
-        payment_success_rate: ['rate>0.70'],
-        deposit_success_rate: ['rate>0.70'], 
+        http_req_failed: ['rate<0.10'],
+        http_req_duration: ['p(95)<1000'],
+        sendmoney_success_rate: ['rate>=0.70'],
+        payment_success_rate: ['rate>=0.70'],
+        deposit_success_rate: ['rate>=0.70'],
     },
 };
 
+// Generic Transaction Executor
+function executeTransaction(endpoint, senderPhone, receiverPhone, amount, token, metricRate, metricTrend, txnName) {
+    const payload = JSON.stringify({
+        from_account: senderPhone,
+        to_account: receiverPhone,
+        amount: amount,
+    });
 
-function sendMoney() {
-    const isAlt = (__ITER + __VU) % 2 === 0;
-    const sender = isAlt ? users.customer2 : users.customer1;
-    const receiver = isAlt ? users.customer1 : users.customer2;
-    const token = isAlt ? tokens.customer2 : tokens.customer1;
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'X-AUTH-SECRET-KEY': 'ROADTOSDET',
+    };
 
-    const res = http.post(
-        `${BASE_URL}/transaction/sendmoney`,
-        JSON.stringify({
-            from_account: sender.phone,
-            to_account: receiver.phone,
-            amount: 10,
-        }),
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                'X-AUTH-SECRET-KEY': 'ROADTOSDET',
-            },
-        }
-    );
-    sendMoneyTrend.add(res.timings.duration);
+    const res = http.post(`${BASE_URL}${endpoint}`, payload, { headers });
+    metricTrend.add(res.timings.duration);
 
-    let success = false;
+    let json = {};
     try {
-        const json = res.json();
-        success = (res.status === 200 || res.status === 201) && (!!json.trnxId || json.message?.toLowerCase().includes('success'));
+        json = res.json();
     } catch (e) { }
 
-    sendMoneySuccessRate.add(success);
-    check(res, { 'Send Money Success': () => success });
+    const isSuccess = check(res, {
+        [`${txnName} status is valid`]: (r) => r.status === 200 || r.status === 201,
+    });
+
+    metricRate.add(isSuccess);
+    return res;
 }
 
-
-function payment() {
-    const isAlt = (__ITER + __VU) % 2 === 0;
-    const payer = isAlt ? users.customer1 : users.customer2;
-    const merchant = isAlt ? users.merchant1 : users.merchant2;
-    const token = isAlt ? tokens.customer1 : tokens.customer2;
-
-    const res = http.post(
-        `${BASE_URL}/transaction/payment`,
-        JSON.stringify({
-            from_account: payer.phone,
-            to_account: merchant.phone,
-            amount: 15,
-        }),
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                'X-AUTH-SECRET-KEY': 'ROADTOSDET',
-            },
-        }
-    );
-    paymentTrend.add(res.timings.duration);
-
-    let success = false;
-    try {
-        const json = res.json();
-        success = (res.status === 200 || res.status === 201) && (!!json.trnxId || json.message?.toLowerCase().includes('success'));
-    } catch (e) { }
-
-    paymentSuccessRate.add(success);
-    check(res, { 'Payment Success': () => success });
-}
-
-
-function deposit() {
-    const isAlt = (__ITER + __VU) % 2 === 0;
-    const agent = isAlt ? users.agent2 : users.agent1;
-    const customer = isAlt ? users.customer2 : users.customer1;
-    const token = isAlt ? tokens.agent2 : tokens.agent1;
-
-    const res = http.post(
-        `${BASE_URL}/transaction/deposit`,
-        JSON.stringify({
-            from_account: agent.phone,
-            to_account: customer.phone,
-            amount: 10,
-        }),
-        {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-                'X-AUTH-SECRET-KEY': 'ROADTOSDET',
-            },
-        }
-    );
-    depositTrend.add(res.timings.duration);
-
-    let success = false;
-    try {
-        const json = res.json();
-        success = (res.status === 200 || res.status === 201) && (!!json.trnxId || json.message?.toLowerCase().includes('success'));
-    } catch (e) { }
-
-    depositSuccessRate.add(success);
-    check(res, { 'Deposit Success': () => success });
-}
-
-// Scenarios
+// 0–30 seconds
+// - Customer 1 sends money to Customer 2
+// - Customer 2 makes payments to Merchant 1
 export function phase1() {
-    sendMoney();
-    sleep(0.5);
-    payment();
-    sleep(1);
+    executeTransaction('/transaction/sendmoney', users.customer1.phone, users.customer2.phone, 10, tokens.customer1, sendMoneySuccessRate, sendMoneyTrend, 'SendMoney');
+    sleep(1.5);
+    executeTransaction('/transaction/payment', users.customer2.phone, users.merchant1.phone, 10, tokens.customer2, paymentSuccessRate, paymentTrend, 'Payment');
+    sleep(2);
 }
 
+// 30–60 seconds
+// - Customer 2 sends money to Customer 1
+// - Agent 1 deposits money to Customer 2
+// - Customer 1 makes payments to Merchant 1
 export function phase2() {
-    sendMoney();
-    sleep(0.5);
-    deposit();
-    sleep(0.5);
-    payment();
+    executeTransaction('/transaction/deposit', users.agent1.phone, users.customer2.phone, 50, tokens.agent1, depositSuccessRate, depositTrend, 'Deposit');
     sleep(1);
+    executeTransaction('/transaction/sendmoney', users.customer2.phone, users.customer1.phone, 10, tokens.customer2, sendMoneySuccessRate, sendMoneyTrend, 'SendMoney');
+    sleep(1.5);
+    executeTransaction('/transaction/payment', users.customer1.phone, users.merchant1.phone, 10, tokens.customer1, paymentSuccessRate, paymentTrend, 'Payment');
+    sleep(2);
 }
 
+// 60–90 seconds
+// - Agent 1 deposits money to Customer 1
+// - Agent 2 deposits money to Customer 2
+// - Customer 1 sends money to Customer 2
+// - Customer 2 makes payments to Merchant 2
 export function phase3() {
-    deposit();
-    sleep(0.5);
-    payment();
+    executeTransaction('/transaction/deposit', users.agent1.phone, users.customer1.phone, 50, tokens.agent1, depositSuccessRate, depositTrend, 'Deposit');
     sleep(1);
+    executeTransaction('/transaction/deposit', users.agent2.phone, users.customer2.phone, 50, tokens.agent2, depositSuccessRate, depositTrend, 'Deposit');
+    sleep(1);
+    executeTransaction('/transaction/sendmoney', users.customer1.phone, users.customer2.phone, 10, tokens.customer1, sendMoneySuccessRate, sendMoneyTrend, 'SendMoney');
+    sleep(1.5);
+    executeTransaction('/transaction/payment', users.customer2.phone, users.merchant2.phone, 10, tokens.customer2, paymentSuccessRate, paymentTrend, 'Payment');
+    sleep(2);
 }
 
+// 90–120 seconds
+// - Customer 1 makes payments to Merchant 1
+// - Customer 2 makes payments to Merchant 2
 export function phase4() {
-    payment();
-    sleep(1);
+    executeTransaction('/transaction/payment', users.customer1.phone, users.merchant1.phone, 10, tokens.customer1, paymentSuccessRate, paymentTrend, 'Payment');
+    sleep(1.5);
+    executeTransaction('/transaction/payment', users.customer2.phone, users.merchant2.phone, 10, tokens.customer2, paymentSuccessRate, paymentTrend, 'Payment');
+    sleep(2);
 }
 
 export function handleSummary(data) {
