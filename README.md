@@ -79,13 +79,24 @@ Make sure the following tools are installed:
 ## 📂 File Structure
 
 ```plaintext
-├── script.js           # Main k6 multi-phase load testing execution script
-├── setup_auth.js       # Authentication script for token generation via admin OTP verification
-├── debug.js            # Quick verification script for single-iteration transaction checks
-├── users.json          # Credentials and account details (Agents, Customers, Merchants)
-├── tokens.json         # Active JWT Bearer tokens for all testing roles
-├── report.html         # Generated HTML summary dashboard from the test run
-└── README.md           # Documentation
+dmoney-k6-test/
+├── screenshots/            # Test report screenshots
+├── script.js               # Main k6 multi-phase load testing script
+├── setup_auth.js           # Token generation via admin OTP verification
+├── setup_all.js            # Runs the complete setup flow
+├── seed_users.js           # Creates Agents, Customers and Merchants
+├── generate_tokens.js      # Generates JWT tokens for all roles
+├── fetch_tokens.js         # Fetches and saves tokens to tokens.json
+├── activate_and_deposit.js # Activates accounts and adds initial deposit
+├── deposit_balance.js      # Deposits balance into accounts
+├── recharge_agents.js      # Recharges agent balances
+├── recharge_customer.js    # Recharges customer balances
+├── balance_fix.js          # Fixes account balances before a run
+├── check_balances.js       # Checks current account balances
+├── check_status.js         # Checks account/system status
+├── users.json              # Credentials and account details
+├── tokens.json             # Active JWT Bearer tokens for all roles
+└── report.html             # Generated k6-reporter HTML dashboard
 ```
 
 ---
