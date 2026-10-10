@@ -1,6 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/grafana/k6/master/assets/k6-logo-with-grafana.svg" alt="Grafana k6" width="260"/>
 
 # DMoney API Load Testing with k6
 
