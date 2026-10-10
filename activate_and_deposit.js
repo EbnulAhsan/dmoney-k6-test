@@ -23,11 +23,11 @@ export default function () {
     };
 
     console.log('--- 2. Fetching User Details by ID (106023) ---');
-    // আইডি দিয়ে সার্চ
+   
     const res1 = http.get(`${BASE_URL}/user/search/id/106023`, { headers: adminHeaders });
     console.log('Response /user/search/id/106023:', res1.status, res1.body);
 
-    // কুয়েরি প্যারাম দিয়ে সার্চ
+ 
     const res2 = http.get(`${BASE_URL}/user/search?phone_number=01717464816`, { headers: adminHeaders });
     console.log('Response /user/search?phone_number=...:', res2.status, res2.body);
 }

@@ -7,7 +7,7 @@ const BASE_URL = 'https://dmoney.roadtocareer.net';
 export const options = { vus: 1, iterations: 1 };
 
 export default function () {
-    // কাস্টমার ১ থেকে ৫০০০ টাকা কাস্টমার ২-এ পাঠিয়ে কাস্টমার ১-এর খালি জায়গা বাড়ানো
+  
     const res1 = http.post(
         `${BASE_URL}/transaction/sendmoney`,
         JSON.stringify({

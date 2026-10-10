@@ -41,7 +41,7 @@ export default function () {
         'X-AUTH-SECRET-KEY': 'ROADTOSDET',
     };
 
-    // ইউনিক ১১ ডিজিটের ফোন নম্বর (0171 / 0172 / 0181 / 0182 / 0191 / 0192 + 7 ডিজিট)
+    
     const randomSuffix = Math.floor(1000000 + Math.random() * 9000000).toString();
     const password = 'Password@123';
 

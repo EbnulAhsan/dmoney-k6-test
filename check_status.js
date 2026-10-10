@@ -5,7 +5,7 @@ const tokens = JSON.parse(open('./tokens.json'));
 const BASE_URL = 'https://dmoney.roadtocareer.net';
 
 export default function () {
-    // ১. Send Money চেক
+    ক
     const smRes = http.post(
         `${BASE_URL}/transaction/sendmoney`,
         JSON.stringify({
@@ -25,7 +25,7 @@ export default function () {
     console.log('Status:', smRes.status);
     console.log('Body:', smRes.body);
 
-    // ২. Payment চেক
+
     const payRes = http.post(
         `${BASE_URL}/transaction/payment`,
         JSON.stringify({
@@ -45,7 +45,7 @@ export default function () {
     console.log('Status:', payRes.status);
     console.log('Body:', payRes.body);
 
-    // ৩. Deposit চেক
+
     const depRes = http.post(
         `${BASE_URL}/transaction/deposit`,
         JSON.stringify({

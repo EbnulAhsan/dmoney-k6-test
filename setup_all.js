@@ -19,7 +19,7 @@ export default function () {
         'X-AUTH-SECRET-KEY': 'ROADTOSDET',
     };
 
-    // এজেন্টদের রিচার্জ
+  
     for (const agent of [users.agent1, users.agent2]) {
         const res = http.post(
             `${BASE_URL}/transaction/deposit`,
@@ -29,7 +29,7 @@ export default function () {
         console.log(`Funded Agent ${agent.phone}: Status ${res.status}`);
     }
 
-    // কাস্টমারদের রিচার্জ (৳২০০০ করে যাতে ১০,০০০ লিমিট ক্রস না করে)
+  
     for (const cust of [users.customer1, users.customer2]) {
         const res = http.post(
             `${BASE_URL}/transaction/deposit`,

@@ -50,11 +50,11 @@ export const options = {
         http_req_duration: ['p(95)<3000'],
         sendmoney_success_rate: ['rate>0.70'],
         payment_success_rate: ['rate>0.70'],
-        deposit_success_rate: ['rate>0.70'], // বাস্তবসম্মত থ্রেশহোল্ড
+        deposit_success_rate: ['rate>0.70'], 
     },
 };
 
-// ১. Send Money (Customer 1 ও 2 রোটেশন)
+
 function sendMoney() {
     const isAlt = (__ITER + __VU) % 2 === 0;
     const sender = isAlt ? users.customer2 : users.customer1;
@@ -88,7 +88,7 @@ function sendMoney() {
     check(res, { 'Send Money Success': () => success });
 }
 
-// ২. Payment (Customer 1 & 2 -> Merchant 1 & 2)
+
 function payment() {
     const isAlt = (__ITER + __VU) % 2 === 0;
     const payer = isAlt ? users.customer1 : users.customer2;
@@ -122,7 +122,7 @@ function payment() {
     check(res, { 'Payment Success': () => success });
 }
 
-// ৩. Deposit (Agent 1 & 2 -> Customer 1 & 2)
+
 function deposit() {
     const isAlt = (__ITER + __VU) % 2 === 0;
     const agent = isAlt ? users.agent2 : users.agent1;

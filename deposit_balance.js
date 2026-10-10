@@ -33,7 +33,7 @@ export default function () {
         'X-AUTH-SECRET-KEY': 'ROADTOSDET',
     };
 
-    // Agent 1 & Agent 2-কে ২০,০০০ করে ডিপোজিট
+    
     for (const agent of [users.agent1, users.agent2]) {
         const res = http.post(
             `${BASE_URL}/transaction/deposit`,
@@ -47,7 +47,7 @@ export default function () {
         console.log(`System -> Agent (${agent.phone}) Status:`, res.status);
     }
 
-    // Customer 1 & Customer 2-কে ২,০০০ করে ডিপোজিট (যাতে ১০,০০০ লিমিট ক্রস না করে)
+    
     for (const cust of [users.customer1, users.customer2]) {
         const res = http.post(
             `${BASE_URL}/transaction/deposit`,

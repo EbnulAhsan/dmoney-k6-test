@@ -3,7 +3,7 @@ const fs = require('fs');
 const BASE_URL = 'https://dmoney.roadtocareer.net';
 const users = JSON.parse(fs.readFileSync('./users.json', 'utf8'));
 
-// ইউজার আইডি ম্যাপিং
+
 const userIds = {
     agent1: 106023,
     agent2: 106024,
@@ -27,7 +27,7 @@ async function getAdminToken() {
 }
 
 async function loginAndGetToken(key, user, adminToken) {
-    // ১. লগইন রিকোয়েস্ট (যা নতুন OTP ট্রিগার করে)
+
     const loginRes = await fetch(`${BASE_URL}/user/login`, {
         method: 'POST',
         headers: {
@@ -42,7 +42,7 @@ async function loginAndGetToken(key, user, adminToken) {
         return loginData.token;
     }
 
-    // ২. আইডি দিয়ে অ্যাডমিন থেকে ইউজারের OTP ফেচ করা
+
     const id = userIds[key];
     const searchRes = await fetch(`${BASE_URL}/user/search/id/${id}`, {
         headers: {
@@ -59,7 +59,7 @@ async function loginAndGetToken(key, user, adminToken) {
         return '';
     }
 
-    // ৩. OTP ভেরিফিকেশন রিকোয়েস্ট
+
     const verifyRes = await fetch(`${BASE_URL}/user/otp/verify`, {
         method: 'POST',
         headers: {
