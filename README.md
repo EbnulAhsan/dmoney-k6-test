@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/grafana/k6/master/assets/k6-logo-with-grafana.svg" alt="Grafana k6" width="260"/>
-
 # DMoney API Load Testing with k6
 
 Automated multi-phase performance and load tests for the **DMoney** fintech platform, built with Grafana k6 and k6-reporter.
@@ -175,19 +173,7 @@ Start-Process report.html
 
 All test run screenshots are also available here:
 
-### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/YOUR_DRIVE_LINK_HERE)
-
-### Report Summary & Response Times
-![Report Summary](screenshots/01-summary-trends.png)
-
-### Success Rates
-![Success Rates](screenshots/02-rates.png)
-
-### Test Run Details
-![Test Run Details](screenshots/03-test-run-details.png)
-
-### Checks
-![Checks](screenshots/04-checks.png)
+### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/drive/folders/12kc_zTK90ArvXOOAh8MGBsIh4FPCdZuI?usp=drive_link)
 
 ---
 
@@ -206,7 +192,7 @@ All test run screenshots are also available here:
 ## 👤 Author
 
 **Md. Ebnul Ahsan**
-CSE Student, AIUB · Full-Stack · DevOps · QA
+CSE Student, AIUB 
 
 [![GitHub](https://img.shields.io/badge/GitHub-EbnulAhsan-181717?style=flat-square&logo=github)](https://github.com/EbnulAhsan)
 
