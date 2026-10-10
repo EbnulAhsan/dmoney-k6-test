@@ -185,18 +185,6 @@ All test run screenshots are also available here:
 
 ### 🔗 [View All Screenshots on Google Drive](https://drive.google.com/YOUR_DRIVE_LINK_HERE)
 
-### Report Summary & Response Times
-![Report Summary](screenshots/01-summary-trends.png)
-
-### Success Rates
-![Success Rates](screenshots/02-rates.png)
-
-### Test Run Details
-![Test Run Details](screenshots/03-test-run-details.png)
-
-### Checks
-![Checks](screenshots/04-checks.png)
-
 ---
 
 ## 🧰 Tech Stack
